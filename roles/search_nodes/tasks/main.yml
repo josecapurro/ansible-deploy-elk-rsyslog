@@ -1,0 +1,23 @@
+---
+- name: Include common variables
+  ansible.builtin.include_vars:
+    file: "{{ playbook_dir }}/group_vars/common"
+
+- name: Import Elastic GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: Install Elastic repository
+  template:
+    src: elastic.repo.j2
+    dest: /etc/yum.repos.d/elastic.repo
+
+- name: Install Elasticsearch
+  ansible.builtin.package:
+    name: elasticsearch
+    state: present
+- name: Create Elasticsearch configuration file
+  template:
+    src: elasticsearch.yml.j2
+    dest: /etc/elasticsearch/elasticsearch.yml

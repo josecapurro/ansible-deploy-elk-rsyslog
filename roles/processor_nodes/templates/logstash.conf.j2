@@ -1,0 +1,25 @@
+input {
+  beats {
+    port => {{ processor_beats_port }}
+  }
+}
+
+filter {
+  grok {
+    match => {
+      "message" => "%{SYSLOGTIMESTAMP:field0} %{GREEDYDATA:host} %{GREEDYDATA:field2} %{GREEDYDATA:field3} %{GREEDYDATA:field4}"
+    }
+  }
+}
+
+output {
+  elasticsearch {
+    hosts => ["https://{{ search_elasticsearch_address }}:{{ search_elasticsearch_port }}"]
+    index => "{{ forwarder_log_tag }}-%{+YYYY.MM.dd}"
+    ssl => true
+    cacert => '{{ processor_logstash_ca_certificate }}'
+    user => '{{ search_elasticsearch_user }}'
+    password => '{{ search_elasticsearch_password }}'
+    ssl_verification_mode => none
+  }
+}

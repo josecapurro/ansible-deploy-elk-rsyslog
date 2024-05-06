@@ -1,0 +1,14 @@
+---
+- name: Include common variables
+  ansible.builtin.include_vars:
+    file: "{{ playbook_dir }}/group_vars/common"
+
+- name: Create rsyslog log forwarding rule
+  template:
+    src: forwarder.conf.j2
+    dest: /etc/rsyslog.d/forwarder.conf
+
+- name: Restart rsyslog service
+  service:
+    name: rsyslog
+    state: restarted

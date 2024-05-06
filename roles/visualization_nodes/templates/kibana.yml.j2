@@ -1,0 +1,20 @@
+server.host: "{{ visualization_kibana_host_address }}"
+elasticsearch.hosts: ["https://{{ search_elasticsearch_address }}:{{ search_elasticsearch_port }}"]
+elasticsearch.username: "{{ visualization_kibana_username }}"
+elasticsearch.password: "{{ visualization_kibana_password }}"
+elasticsearch.ssl.certificate: {{ visualization_client_certificate }}
+elasticsearch.ssl.key: {{ visualization_client_key }}
+elasticsearch.ssl.certificateAuthorities: [ "{{ visualization_ca_certificate }}" ]
+elasticsearch.ssl.verificationMode: none
+logging:
+  appenders:
+    file:
+      type: file
+      fileName: /var/log/kibana/kibana.log
+      layout:
+        type: json
+  root:
+    appenders:
+      - default
+      - file
+pid.file: /run/kibana/kibana.pid

@@ -1,0 +1,19 @@
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+network.host: {{ search_elasticsearch_address }}
+http.port: {{ search_elasticsearch_port }}
+xpack.security.enabled: true
+xpack.security.enrollment.enabled: true
+xpack.security.http.ssl:
+  enabled: true
+  key: {{ common_logstash_key }}
+  certificate: {{ common_logstash_certificate }}
+  certificate_authorities: {{ common_ca_certificate }}
+  verification_mode: certificate
+xpack.security.transport.ssl:
+  enabled: true
+  key: {{ common_logstash_key }}
+  certificate: {{ common_logstash_certificate }}
+  certificate_authorities: {{ common_ca_certificate }}
+  verification_mode: certificate
+cluster.initial_master_nodes: ["{{ search_elasticsearch_master_node_name }}"]

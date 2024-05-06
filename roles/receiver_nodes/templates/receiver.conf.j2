@@ -1,0 +1,4 @@
+module(load="imudp")
+input(type="imudp" port={{ receiver_syslog_port }})
+module(load="imtcp")
+input(type="imtcp" port={{ receiver_syslog_port }})

@@ -1,0 +1,9 @@
+module(load="imfile" PollingInterval="10")
+
+input(type="imfile"
+      File="{{ forwarder_log_file }}"
+      Tag="{{ forwarder_log_tag }}"
+      Severity="notice"
+      Facility="local7")
+:syslogtag, isequal, "{{ forwarder_log_tag }}" {{ forwarder_syslog_logfile }}
+& stop

@@ -1,0 +1,8 @@
+processor_beats_port:
+processor_logstash_address:
+processor_logstash_port:
+search_elasticsearch_address:
+search_elasticsearch_port:
+search_elasticsearch_user:
+search_elasticsearch_password:
+common_ca_certificate:

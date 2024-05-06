@@ -1,0 +1,27 @@
+---
+- name: Create CA for search nodes
+  ansible.builtin.shell: "{{ search_elasticsearch_certutil }} ca -s --pem --out {{ common_certs_dir }}/ca.zip"
+
+- name: Extract CA cert & key zip file
+  ansible.builtin.shell: unzip ca.zip
+  args: 
+    chdir: "{{ search_elasticsearch_config_dir }}"
+
+- name: Create certificates for HTTPS clients
+  ansible.builtin.shell: "{{ search_elasticsearch_certutil }} cert -s --pem --ca-cert {{ common_ca_certificate }} --ca-key {{ common_ca_key }} --name client --out {{ common_certs_dir }}/client.zip"
+    
+- name: Extract client cert & key zip file
+  ansible.builtin.shell: unzip client.zip
+  args: 
+    chdir: "{{ search_elasticsearch_config_dir }}"
+
+- name: Create visualization nodes credentials
+  ansible.builtin.shell: "{{ search_elasticsearch_users }} -s useradd {{ visualization_kibana_username }} -p {{ visualization_kibana_password }} -r superuser,kibana_admin,kibana_system,create_index"
+
+      #- name: Create certificates for receiver nodes
+      #- name: Create certificates for visualization nodes
+      #- name: Create search nods credentials
+      #- name: Restart services in search nodes
+      #- name: Restart services in receiver nodes
+      #- name: Restart services in processor nodes
+      #- name: Restart services in visualization nodes

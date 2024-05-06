@@ -1,0 +1,5 @@
+visualization_kibana_host_address:
+visualization_kibana_username:
+visualization_kibana_password:
+common_client_certificate:
+common_client_key:

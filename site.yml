@@ -1,0 +1,36 @@
+---
+- name: Configure syslog logfile forwarding on application servers
+  hosts: forwarder_nodes
+
+  roles:
+    - forwarder_nodes
+
+- name: Configure syslog and filebeat on log receiver nodes
+  hosts: receiver_nodes
+
+  roles:
+    - receiver_nodes
+
+- name: Configure logstash on log processor nodes
+  hosts: processor_nodes
+
+  roles:
+    - processor_nodes
+
+- name: Configure Elasticsearch on search nodes
+  hosts: search_nodes
+
+  roles:
+    - search_nodes
+
+- name: Configure Kibana on visualization nodes
+  hosts: visualization_nodes
+
+  roles:
+    - visualization_nodes
+
+- name: Deploy CA and application certificates & keys
+  hosts: search_nodes
+
+  roles:
+    - common

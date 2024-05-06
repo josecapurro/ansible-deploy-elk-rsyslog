@@ -1,0 +1,24 @@
+filebeat.inputs:
+- type: filestream
+  id: {{ forwarder_log_tag }}
+  enabled: true
+  paths:
+    - {{ forwarder_syslog_logfile }}
+
+filebeat.config.modules:
+  path: /etc/filebeat/modules.d/*.yml
+  reload.enabled: false
+
+setup.template.settings:
+  index.number_of_shards: 1
+
+output.logstash:
+  hosts: ["{{ processor_logstash_address }}:{{ processor_logstash_port }}"]
+
+processors:
+  - add_host_metadata:
+      when.not.contains.tags: forwarded
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
+  - add_kubernetes_metadata: ~
+

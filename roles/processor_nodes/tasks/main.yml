@@ -1,0 +1,29 @@
+---
+- name: Include common variables
+  ansible.builtin.include_vars:
+    file: "{{ playbook_dir }}/group_vars/common"
+
+- name: Import Elastic GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: Install Elastic repository
+  template:
+    src: elastic.repo.j2
+    dest: /etc/yum.repos.d/elastic.repo
+
+- name: Install Logstash
+  ansible.builtin.package:
+    name: logstash
+    state: present
+
+- name: Create Logstash configuration file
+  template:
+    src: logstash.conf.j2
+    dest: /etc/logstash/logstash.conf
+
+- name: Create Logstash pipelines configuration file
+  template:
+    src: pipelines.yml.j2
+    dest: /etc/logstash/pipelines.yml

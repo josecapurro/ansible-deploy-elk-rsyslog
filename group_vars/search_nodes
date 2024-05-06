@@ -1,0 +1,5 @@
+search_elasticsearch_address: 172.16.0.15
+search_elasticsearch_port: 9200
+search_elasticsearch_master_node_name: elasticsearch
+search_elasticsearch_config_dir: /etc/elasticsearch
+search_elasticsearch_certutil: /usr/share/elasticsearch/bin/elasticsearch-certutil

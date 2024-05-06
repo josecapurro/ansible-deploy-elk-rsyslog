@@ -1,0 +1,42 @@
+---
+- name: Include common variables
+  ansible.builtin.include_vars:
+    file: "{{ playbook_dir }}/group_vars/common"
+
+- name: Import Elastic GPG key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+- name: Install Elastic repository
+  template:
+    src: elastic.repo.j2
+    dest: /etc/yum.repos.d/elastic.repo
+
+- name: Install Filebeat
+  ansible.builtin.package:
+    name: filebeat
+    state: present
+
+- name: Create Filebeat configuration file
+  template:
+    src: filebeat.yml.j2
+    dest: /etc/filebeat/filebeat.yml
+
+- name: Enable Logstash module
+  ansible.builtin.shell: "filebeat modules enable logstash"
+
+- name: Create Filebeat Logstash module configuration file
+  template:
+    src: logstash.yml.j2
+    dest: /etc/filebeat/modules.d/logstash.yml
+
+- name: Enable rsyslog TCP/UDP modules
+  template:
+    src: receiver.conf.j2
+    dest: /etc/rsyslog.d/receiver.conf
+
+- name: Restart rsyslog service
+  service:
+    name: rsyslog
+    state: restarted
